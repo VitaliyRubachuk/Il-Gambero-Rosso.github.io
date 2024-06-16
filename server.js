@@ -102,6 +102,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('/login.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'Ресторан сайт', 'login.html'));
+});
+
 app.get('/comments/:dish_id', (req, res) => {
   const { dish_id } = req.params;
   db.query('SELECT * FROM comments WHERE dish_id = ?', [dish_id], (err, results) => {
