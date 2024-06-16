@@ -105,6 +105,10 @@ app.get('/', (req, res) => {
 app.get('/login.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'rest', 'login.html'));
 });
+app.get('/login', (req, res) => {
+  res.redirect('/login.html');
+});
+
 
 app.get('/comments/:dish_id', (req, res) => {
   const { dish_id } = req.params;
