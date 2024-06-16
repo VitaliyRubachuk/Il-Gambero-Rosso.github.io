@@ -96,6 +96,8 @@ db.getConnection((err, connection) => {
   }
 });
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'rest')));
 
 // Serve static files
