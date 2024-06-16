@@ -101,6 +101,26 @@ app.get('/styles.css', (req, res) => {
   res.sendFile(cssPath);
 });
 
+app.get('/main.js', (req, res) => {
+  res.sendFile(cssPath);
+});
+
+app.get('/order.js', (req, res) => {
+  res.sendFile(cssPath);
+});
+
+app.get('/auth.js', (req, res) => {
+  res.sendFile(cssPath);
+});
+
+app.get('/admin-orders.js', (req, res) => {
+  res.sendFile(cssPath);
+});
+
+app.get('/admin.js', (req, res) => {
+  res.sendFile(cssPath);
+});
+
 app.use(express.static(path.join(__dirname, 'rest')));
 app.use(express.static(path.join(__dirname, 'images')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
