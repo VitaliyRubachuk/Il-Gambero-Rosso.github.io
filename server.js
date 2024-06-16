@@ -96,6 +96,7 @@ db.getConnection((err, connection) => {
   }
 });
 
+app.use(express.static(path.join(__dirname, 'css')));
 app.use(express.static(path.join(__dirname, 'rest')));
 app.use(express.static(path.join(__dirname, 'images')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
@@ -104,11 +105,11 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/admin', (req, res) => {
+app.get('/admin.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'admin.html'));
 });
 
-app.get('/admin-orders', (req, res) => {
+app.get('/admin-orders.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'admin-orders.html'));
 });
 
@@ -117,11 +118,11 @@ app.get('/login.html', (req, res) => {
 });
 
 
-app.get('/order', (req, res) => {
+app.get('/order.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'order.html'));
 });
 
-app.get('/register', (req, res) => {
+app.get('/register.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'register.html'));
 });
 
