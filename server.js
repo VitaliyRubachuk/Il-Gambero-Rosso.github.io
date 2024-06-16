@@ -97,9 +97,31 @@ db.getConnection((err, connection) => {
 });
 
 app.use(express.static(path.join(__dirname, 'rest')));
+app.use(express.static(path.join(__dirname, 'images')));
+app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+app.get('/admin-orders', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin-orders.html'));
+});
+
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'login.html'));
+});
+
+app.get('/order', (req, res) => {
+    res.sendFile(path.join(__dirname, 'order.html'));
+});
+
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, 'register.html'));
 });
 
 
