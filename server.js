@@ -95,6 +95,10 @@ db.getConnection((err, connection) => {
   }
 });
 
+app.get('/', (req, res) => {
+    res.send('Привіт, це головна сторінка вашого додатку!');
+});
+
 app.get('/comments/:dish_id', (req, res) => {
   const { dish_id } = req.params;
   db.query('SELECT * FROM comments WHERE dish_id = ?', [dish_id], (err, results) => {
