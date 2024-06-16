@@ -95,6 +95,10 @@ db.getConnection((err, connection) => {
     connection.release();
   }
 });
+app.use(express.static(path.join(__dirname, 'rest')));
+app.use(express.static(path.join(__dirname, 'node_modules')));
+app.use(express.static(path.join(__dirname, 'images')));
+
 const cssPath = path.join(__dirname, 'styles.css');
 const mainPath = path.join(__dirname, 'main.js');
 const orderPath = path.join(__dirname, 'order.js');
@@ -111,19 +115,19 @@ app.get('/styles.css', (req, res) => {
 });
 
 app.get('/facebook-icon.png', (req, res) => {
-  res.sendFile(FPath);
+  res.sendFile(path.join(__dirname, 'images/facebook-icon.png'));
 });
 
 app.get('/instagram-icon.png', (req, res) => {
-  res.sendFile(IPath);
+  res.sendFile(path.join(__dirname, 'images/instagram-icon.png'));
 });
 
 app.get('/telegram-icon.png', (req, res) => {
-  res.sendFile(TPath);
+  res.sendFile(path.join(__dirname, 'images/telegram-icon.png'));
 });
 
 app.get('/logo.png', (req, res) => {
-  res.sendFile(logoPath);
+  res.sendFile(path.join(__dirname, 'images/logo.png'));
 });
 
 app.get('/main.js', (req, res) => {
@@ -146,9 +150,7 @@ app.get('/admin.js', (req, res) => {
   res.sendFile(adminPath);
 });
 
-app.use(express.static(path.join(__dirname, 'rest')));
-app.use(express.static(path.join(__dirname, 'images')));
-app.use(express.static(path.join(__dirname, 'node_modules')));
+
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
