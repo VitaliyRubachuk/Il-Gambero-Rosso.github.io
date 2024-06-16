@@ -96,43 +96,14 @@ db.getConnection((err, connection) => {
   }
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'rest')));
 
-// Serve static files
-app.use('/styles', express.static(path.join(__dirname, 'rest', 'styles')));
-app.use('/images', express.static(path.join(__dirname, 'rest', 'images')));
-app.use('/scripts', express.static(path.join(__dirname, 'rest', 'scripts')));
-app.use('/favicon.ico', express.static(path.join(__dirname, 'rest', 'favicon.ico')));
-
-// Route for main page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'rest', 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Routes for other HTML files
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'rest', 'login.html'));
-});
 
-app.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, 'rest', 'register.html'));
-});
 
-app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, 'rest', 'admin.html'));
-});
-
-app.get('/admin-orders', (req, res) => {
-  res.sendFile(path.join(__dirname, 'rest', 'admin-orders.html'));
-});
-
-app.get('/order', (req, res) => {
-  res.sendFile(path.join(__dirname, 'rest', 'order.html'));
-});
-
-// API endpoints
 app.get('/comments/:dish_id', (req, res) => {
   const { dish_id } = req.params;
   db.query('SELECT * FROM comments WHERE dish_id = ?', [dish_id], (err, results) => {
@@ -263,38 +234,97 @@ app.get('/categories', (req, res) => {
 
 app.post('/menu', (req, res) => {
   const { name, price, image, description, weight, category_id } = req.body;
-  db.query('INSERT INTO menu (name, price, image, description, weight, category_id) VALUES (?, ?, ?, ?, ?, ?)', 
-      [name, price, image, description, weight, category_id], (err, result) => {
-    if (err) throw err;
-    res.json({ success: true });
+  db.query('INSERT INTO menu (name, price, image, description, weight, category_id) VALUES (?, ?, ?, ?, ?, ?)', [name, price, image, description, weight, category_id], (err, result) => {
+    if (err) {
+      console.error('Error while adding menu item:', err);
+      return res.status(500).json({ success: false, message: 'Failed to add menu item', error: err.message });
+    } else {
+      res.json({ success: true });
+    }
   });
 });
 
 app.get('/menu', (req, res) => {
-  db.query('SELECT * FROM menu', (err, results) => {
+  db.query('SELECT menu.*, categories.name as category FROM menu JOIN categories ON menu.category_id = categories.id', (err, results) => {
     if (err) throw err;
     res.json(results);
   });
 });
 
-app.get('/menu/:id', (req, res) => {
+app.delete('/comments/:id', (req, res) => {
   const { id } = req.params;
-  db.query('SELECT * FROM menu WHERE id = ?', [id], (err, results) => {
+  db.query('DELETE FROM comments WHERE id = ?', [id], (err, result) => {
     if (err) throw err;
-    res.json(results[0]);
-  });
-});
-
-app.delete('/menu/:id', (req, res) => {
-  const { id } = req.params;
-  db.query('DELETE FROM menu WHERE id = ?', [id], (err, result) => {
-    if (err) throw err;
-    reorderIDs('menu', () => {
+    db.query(`ALTER TABLE comments AUTO_INCREMENT = 1`, err => {
+      if (err) throw err;
       res.json({ success: true });
     });
   });
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+app.delete('/menu/:id', (req, res) => {
+    const { id } = req.params;
+    db.query('DELETE FROM menu WHERE id = ?', [id], (err, result) => {
+        if (err) throw err;
+        reorderIDs('menu', () => {
+            res.json({ success: true });
+        });
+    });
 });
+
+app.delete('/categories/:id', (req, res) => {
+    const { id } = req.params;
+    db.query('DELETE FROM categories WHERE id = ?', [id], (err, result) => {
+        if (err) throw err;
+        reorderIDs('categories', () => {
+            res.json({ success: true });
+        });
+    });
+});
+
+app.delete('/users/:id', (req, res) => {
+    const { id } = req.params;
+    db.query('DELETE FROM users WHERE id = ?', [id], (err, result) => {
+        if (err) throw err;
+        reorderIDs('users', () => {
+            res.json({ success: true });
+        });
+    });
+});
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
+
+app.put('/menu/:id', (req, res) => {
+    const { id } = req.params;
+    const { name, price, image, description, weight, category_id } = req.body;
+    console.log('Update Request Body:', req.body);
+
+    db.query('UPDATE menu SET name = ?, price = ?, image = ?, description = ?, weight = ?, category_id = ? WHERE id = ?', [name, price, image, description, weight, category_id, id], (err, result) => {
+        if (err) {
+            console.error('Error while updating menu item:', err);
+            return res.status(500).json({ success: false, message: 'Failed to update menu item', error: err.message });
+        } else {
+            res.json({ success: true });
+        }
+    });
+});
+
+app.use((req, res, next) => {
+    res.status(404).json({ success: false, message: 'Route not found' });
+  });
+  
+  // Глобальний обробник помилок
+  app.use((err, req, res, next) => {
+    console.error('Error:', err);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  });
+  
+
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+  });
+
