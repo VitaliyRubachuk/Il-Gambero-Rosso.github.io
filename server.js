@@ -96,7 +96,7 @@ db.getConnection((err, connection) => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Привіт, це головна сторінка вашого додатку!');
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.get('/comments/:dish_id', (req, res) => {
