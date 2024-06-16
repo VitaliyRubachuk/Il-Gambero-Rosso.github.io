@@ -89,7 +89,8 @@ db.getConnection((err, connection) => {
     ) LIMIT 1;
   `;
   
-  bcrypt.hash('dbcheck', saltRounds, (err, hashedPassword) => {
+
+  bcrypt.hash(dbcheck, saltRounds, (err, hashedPassword) => {
     if (err) throw err;
     connection.query(insertAdminUser, [hashedPassword], (err, result) => {
       if (err) throw err;
