@@ -96,29 +96,34 @@ db.getConnection((err, connection) => {
   }
 });
 const cssPath = path.join(__dirname, 'styles.css');
+const mainPath = path.join(__dirname, 'main.js');
+const orderPath = path.join(__dirname, 'order.js');
+const authPath = path.join(__dirname, 'auth.js');
+const adminordersPath = path.join(__dirname, 'admin-orders.js');
+const adminPath = path.join(__dirname, 'admin.js');
 
 app.get('/styles.css', (req, res) => {
   res.sendFile(cssPath);
 });
 
 app.get('/main.js', (req, res) => {
-  res.sendFile(cssPath);
+  res.sendFile(mainPath);
 });
 
 app.get('/order.js', (req, res) => {
-  res.sendFile(cssPath);
+  res.sendFile(orderPath);
 });
 
 app.get('/auth.js', (req, res) => {
-  res.sendFile(cssPath);
+  res.sendFile(authPath);
 });
 
 app.get('/admin-orders.js', (req, res) => {
-  res.sendFile(cssPath);
+  res.sendFile(adminordersPath);
 });
 
 app.get('/admin.js', (req, res) => {
-  res.sendFile(cssPath);
+  res.sendFile(adminPath);
 });
 
 app.use(express.static(path.join(__dirname, 'rest')));
