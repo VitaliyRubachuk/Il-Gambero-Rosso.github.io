@@ -112,9 +112,10 @@ app.get('/admin-orders', (req, res) => {
     res.sendFile(path.join(__dirname, 'admin-orders.html'));
 });
 
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'login.html'));
+app.get('/login.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'login.html'));
 });
+
 
 app.get('/order', (req, res) => {
     res.sendFile(path.join(__dirname, 'order.html'));
