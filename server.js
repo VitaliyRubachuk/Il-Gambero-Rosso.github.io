@@ -98,15 +98,18 @@ db.getConnection((err, connection) => {
 
 app.use(express.static(path.join(__dirname, 'rest')));
 
+app.use('/styles', express.static(path.join(__dirname, 'rest', 'styles')));
+
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'rest', 'index.html'));
 });
 
 app.get('/login.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'rest', 'login.html'));
 });
+
 app.get('/login', (req, res) => {
-  res.redirect('/login.html');
+  res.sendFile(path.join(__dirname, 'rest', '/login.html'));
 });
 
 
