@@ -96,14 +96,14 @@ db.getConnection((err, connection) => {
   }
 });
 
-app.use(express.static(path.join(__dirname, 'Ресторан сайт')));
+app.use(express.static(path.join(__dirname, 'rest')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.get('/login.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'Ресторан сайт', 'login.html'));
+  res.sendFile(path.join(__dirname, 'rest', 'login.html'));
 });
 
 app.get('/comments/:dish_id', (req, res) => {
