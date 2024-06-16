@@ -95,14 +95,22 @@ db.getConnection((err, connection) => {
     connection.release();
   }
 });
+const cssPath = path.join(__dirname, 'styles.css');
 
-app.use(express.static(path.join(__dirname, 'css')));
+app.get('/styles.css', (req, res) => {
+  res.sendFile(cssPath);
+});
+
 app.use(express.static(path.join(__dirname, 'rest')));
 app.use(express.static(path.join(__dirname, 'images')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/index.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.get('/admin.html', (req, res) => {
