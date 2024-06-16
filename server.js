@@ -98,18 +98,17 @@ db.getConnection((err, connection) => {
 
 app.use(express.static(path.join(__dirname, 'rest')));
 
+// Налаштування статичних файлів для папки styles
 app.use('/styles', express.static(path.join(__dirname, 'rest', 'styles')));
 
+// Маршрут для головної сторінки
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'rest', 'index.html'));
 });
 
-app.get('/login.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'rest', 'login.html'));
-});
-
+// Маршрут для сторінки логіну
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'rest', '/login.html'));
+    res.sendFile(path.join(__dirname, 'rest', 'login.html'));
 });
 
 
