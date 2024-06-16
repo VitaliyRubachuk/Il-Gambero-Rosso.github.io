@@ -105,29 +105,29 @@ const orderPath = path.join(__dirname, 'order.js');
 const authPath = path.join(__dirname, 'auth.js');
 const adminordersPath = path.join(__dirname, 'admin-orders.js');
 const adminPath = path.join(__dirname, 'admin.js');
-const logoPath = path.join(__dirname, '/images/logo.png');
-const FPath = path.join(__dirname, '/images/facebook-icon.png');
-const IPath = path.join(__dirname, '/images/instagram-icon.png');
-const TPath = path.join(__dirname, '/images/telegram-icon.png');
+const logoPath = path.join(__dirname, 'logo.png');
+const FPath = path.join(__dirname, 'images/facebook-icon.png');
+const IPath = path.join(__dirname, 'images/instagram-icon.png');
+const TPath = path.join(__dirname, 'images/telegram-icon.png');
 
 app.get('/styles.css', (req, res) => {
   res.sendFile(cssPath);
 });
 
 app.get('/facebook-icon.png', (req, res) => {
-  res.sendFile(path.join(__dirname, 'images/facebook-icon.png'));
+  res.sendFile(FPath);
 });
 
 app.get('/instagram-icon.png', (req, res) => {
-  res.sendFile(path.join(__dirname, 'images/instagram-icon.png'));
+  res.sendFile(IPath);
 });
 
 app.get('/telegram-icon.png', (req, res) => {
-  res.sendFile(path.join(__dirname, 'images/telegram-icon.png'));
+  res.sendFile(TPath);
 });
 
 app.get('/logo.png', (req, res) => {
-  res.sendFile(path.join(__dirname, 'images/logo.png'));
+  res.sendFile(logoPath);
 });
 
 app.get('/main.js', (req, res) => {
