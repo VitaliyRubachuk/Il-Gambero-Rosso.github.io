@@ -4,11 +4,10 @@ const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const app = express();
 const port = process.env.PORT || 3000;
-const saltRounds = parseInt(process.env.SALT_ROUNDS) || 10;
 const dbcheck = process.env.DBCHECK;
 
 app.use(cors());
@@ -19,16 +18,14 @@ const db = mysql.createPool({
   user: process.env.CLEARDB_DATABASE_USER,
   password: process.env.CLEARDB_DATABASE_PASSWORD,
   database: process.env.CLEARDB_DATABASE_NAME,
-  connectionLimit: 30, // Можна збільшити якщо сервер крашить
+  connectionLimit: 30,
 });
-
 
 db.getConnection((err, connection) => {
   if (err) {
     console.error('Error connecting to database:', err);
   } else {
     console.log('MySQL Connected...');
-
 
     const createTables = `
       CREATE TABLE IF NOT EXISTS orders (
@@ -70,7 +67,6 @@ db.getConnection((err, connection) => {
       );
     `;
 
-
     const queries = createTables.split(';').filter(q => q.trim() !== '');
 
     queries.forEach(query => {
@@ -80,28 +76,24 @@ db.getConnection((err, connection) => {
       });
     });
 
-
     const insertAdminUser = `
-    INSERT INTO users (username, password, role)
-    SELECT 'admin', ?, 'admin' FROM DUAL
-    WHERE NOT EXISTS (
-        SELECT username FROM users WHERE username = 'admin'
-    ) LIMIT 1;
-  `;
-  
+      INSERT INTO users (username, password, role)
+      SELECT 'admin', ?, 'admin' FROM DUAL
+      WHERE NOT EXISTS (
+          SELECT username FROM users WHERE username = 'admin'
+      ) LIMIT 1;
+    `;
 
-  bcrypt.hash(dbcheck, saltRounds, (err, hashedPassword) => {
-    if (err) throw err;
-    connection.query(insertAdminUser, [hashedPassword], (err, result) => {
+    const hashPassword = crypto.createHash('sha256').update(dbcheck).digest('hex');
+
+    connection.query(insertAdminUser, [hashPassword], (err, result) => {
       if (err) throw err;
       console.log('Admin user inserted if not exists');
-    });
     });
 
     connection.release();
   }
 });
-
 
 app.get('/comments/:dish_id', (req, res) => {
   const { dish_id } = req.params;
@@ -114,7 +106,6 @@ app.get('/comments/:dish_id', (req, res) => {
     }
   });
 });
-
 
 app.post('/comments', (req, res) => {
   const { username, dish_id, comment } = req.body;
@@ -129,137 +120,137 @@ app.post('/comments', (req, res) => {
 });
 
 const reorderIDs = (table, callback) => {
-    db.query(`SET @count = 0`, err => {
+  db.query(`SET @count = 0`, err => {
+    if (err) throw err;
+    db.query(`UPDATE ${table} SET id = @count := @count + 1`, err => {
+      if (err) throw err;
+      db.query(`ALTER TABLE ${table} AUTO_INCREMENT = 1`, err => {
         if (err) throw err;
-        db.query(`UPDATE ${table} SET id = @count := @count + 1`, err => {
-            if (err) throw err;
-            db.query(`ALTER TABLE ${table} AUTO_INCREMENT = 1`, err => {
-                if (err) throw err;
-                callback();
-            });
-        });
+        callback();
+      });
     });
+  });
 };
 
 app.get('/orders', (req, res) => {
-    db.query('SELECT * FROM orders', (err, results) => {
-        if (err) throw err;
-        res.json(results);
-    });
+  db.query('SELECT * FROM orders', (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
 });
 
 app.delete('/orders/:id', (req, res) => {
-    const { id } = req.params;
-    db.query('DELETE FROM orders WHERE id = ?', [id], (err, result) => {
-        if (err) throw err;
-        reorderIDs('orders', () => {
-            res.json({ success: true });
-        });
+  const { id } = req.params;
+  db.query('DELETE FROM orders WHERE id = ?', [id], (err, result) => {
+    if (err) throw err;
+    reorderIDs('orders', () => {
+      res.json({ success: true });
     });
+  });
 });
 
 app.post('/register', async (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    try {
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-        db.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
-            if (err) throw err;
-            if (results.length > 0) {
-                res.json({ success: false, message: 'Username already taken!' });
-            } else {
-                db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword], (err, result) => {
-                    if (err) throw err;
-                    res.json({ success: true });
-                });
-            }
+  try {
+    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+    db.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
+      if (err) throw err;
+      if (results.length > 0) {
+        res.json({ success: false, message: 'Username already taken!' });
+      } else {
+        db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword], (err, result) => {
+          if (err) throw err;
+          res.json({ success: true });
         });
-    } catch (error) {
-        console.error('Error while hashing password:', error);
-        res.status(500).json({ success: false, message: 'Failed to register user', error: error.message });
-    }
+      }
+    });
+  } catch (error) {
+    console.error('Error while hashing password:', error);
+    res.status(500).json({ success: false, message: 'Failed to register user', error: error.message });
+  }
 });
 
 app.post('/orders', (req, res) => {
-    const { username, additionalRequests, orderedItemsIds } = req.body;
+  const { username, additionalRequests, orderedItemsIds } = req.body;
 
-    db.query('INSERT INTO orders (username, additionalRequests, orderedItemsIds) VALUES (?, ?, ?)', 
-        [username, additionalRequests, orderedItemsIds], (err, result) => {
-        if (err) {
-            console.error('Error while adding order:', err);
-            return res.status(500).json({ success: false, message: 'Failed to add order', error: err.message });
-        } else {
-            res.json({ success: true });
-        }
-    });
+  db.query('INSERT INTO orders (username, additionalRequests, orderedItemsIds) VALUES (?, ?, ?)', 
+      [username, additionalRequests, orderedItemsIds], (err, result) => {
+    if (err) {
+      console.error('Error while adding order:', err);
+      return res.status(500).json({ success: false, message: 'Failed to add order', error: err.message });
+    } else {
+      res.json({ success: true });
+    }
+  });
 });
 
 app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    db.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
-        if (err) throw err;
-        if (results.length > 0) {
-            const user = results[0];
-            try {
-                const match = await bcrypt.compare(password, user.password);
-                if (match) {
-                    res.json({ success: true, user });
-                } else {
-                    res.json({ success: false, message: 'Invalid username or password!' });
-                }
-            } catch (error) {
-                console.error('Error while comparing passwords:', error);
-                res.status(500).json({ success: false, message: 'Failed to authenticate', error: error.message });
-            }
+  const { username, password } = req.body;
+  db.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
+    if (err) throw err;
+    if (results.length > 0) {
+      const user = results[0];
+      try {
+        const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+        if (hashedPassword === user.password) {
+          res.json({ success: true, user });
         } else {
-            res.json({ success: false, message: 'Invalid username or password!' });
+          res.json({ success: false, message: 'Invalid username or password!' });
         }
-    });
+      } catch (error) {
+        console.error('Error while comparing passwords:', error);
+        res.status(500).json({ success: false, message: 'Failed to authenticate', error: error.message });
+      }
+    } else {
+      res.json({ success: false, message: 'Invalid username or password!' });
+    }
+  });
 });
 
 app.post('/categories', (req, res) => {
-    const { name } = req.body;
-    db.query('INSERT INTO categories (name) VALUES (?)', [name], (err, result) => {
-        if (err) throw err;
-        res.json({ success: true });
-    });
+  const { name } = req.body;
+  db.query('INSERT INTO categories (name) VALUES (?)', [name], (err, result) => {
+    if (err) throw err;
+    res.json({ success: true });
+  });
 });
 
 app.get('/categories', (req, res) => {
-    db.query('SELECT * FROM categories', (err, results) => {
-        if (err) throw err;
-        res.json(results);
-    });
+  db.query('SELECT * FROM categories', (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
 });
 
 app.post('/menu', (req, res) => {
-    const { name, price, image, description, weight, category_id } = req.body;
-    db.query('INSERT INTO menu (name, price, image, description, weight, category_id) VALUES (?, ?, ?, ?, ?, ?)', [name, price, image, description, weight, category_id], (err, result) => {
-        if (err) {
-            console.error('Error while adding menu item:', err);
-            return res.status(500).json({ success: false, message: 'Failed to add menu item', error: err.message });
-        } else {
-            res.json({ success: true });
-        }
-    });
+  const { name, price, image, description, weight, category_id } = req.body;
+  db.query('INSERT INTO menu (name, price, image, description, weight, category_id) VALUES (?, ?, ?, ?, ?, ?)', [name, price, image, description, weight, category_id], (err, result) => {
+    if (err) {
+      console.error('Error while adding menu item:', err);
+      return res.status(500).json({ success: false, message: 'Failed to add menu item', error: err.message });
+    } else {
+      res.json({ success: true });
+    }
+  });
 });
 
 app.get('/menu', (req, res) => {
-    db.query('SELECT menu.*, categories.name as category FROM menu JOIN categories ON menu.category_id = categories.id', (err, results) => {
-        if (err) throw err;
-        res.json(results);
-    });
+  db.query('SELECT menu.*, categories.name as category FROM menu JOIN categories ON menu.category_id = categories.id', (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
 });
 
 app.delete('/comments/:id', (req, res) => {
-    const { id } = req.params;
-    db.query('DELETE FROM comments WHERE id = ?', [id], (err, result) => {
-        if (err) throw err;
-        db.query(`ALTER TABLE comments AUTO_INCREMENT = 1`, err => {
-            if (err) throw err;
-            res.json({ success: true });
-        });
+  const { id } = req.params;
+  db.query('DELETE FROM comments WHERE id = ?', [id], (err, result) => {
+    if (err) throw err;
+    db.query(`ALTER TABLE comments AUTO_INCREMENT = 1`, err => {
+      if (err) throw err;
+      res.json({ success: true });
     });
+  });
 });
 
 app.delete('/menu/:id', (req, res) => {
