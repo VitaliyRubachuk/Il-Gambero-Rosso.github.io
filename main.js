@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
     function fetchMenu() {
-        fetch('http://localhost:3000/menu')
+        fetch('https://eu-cluster-west-01.k8s.cleardb.net/menu')
             .then(response => response.json())
             .then(menu => {
                 renderMenu(menu);
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function deleteProduct(id) {
-        fetch(`http://localhost:3000/menu/${id}`, {
+        fetch(`https://eu-cluster-west-01.k8s.cleardb.net/menu${id}`, {
             method: 'DELETE'
         }).then(() => fetchMenu());
     }
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
         commentsContainer.innerHTML = '';
 
-        fetch(`http://localhost:3000/comments/${dishId}`)
+        fetch(`https://eu-cluster-west-01.k8s.cleardb.net/comments/${dishId}`)
             .then(response => response.json())
             .then(comments => {
                 comments.forEach(comment => {
@@ -137,11 +137,11 @@ document.addEventListener("DOMContentLoaded", function() {
     
 
     function deleteComment(commentId, dishId) {
-        fetch(`http://localhost:3000/comments/${commentId}`, {
+        fetch(`https://eu-cluster-west-01.k8s.cleardb.net/comments/${commentId}`, {
             method: 'DELETE'
         })
         .then(() => {
-            fetch(`http://localhost:3000/comments/reorder`) 
+            fetch(`https://eu-cluster-west-01.k8s.cleardb.net/comments/reorder`) 
             .then(() => openCommentModal(dishId)); 
         });
     }
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     
     function postComment(dishId, comment) {
-        fetch('http://localhost:3000/comments', {
+        fetch('https://eu-cluster-west-01.k8s.cleardb.net/comments', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const dishCategorySelect = form.elements["dishCategory"];
         dishCategorySelect.innerHTML = '';
 
-        fetch('http://localhost:3000/categories')
+        fetch('https://eu-cluster-west-01.k8s.cleardb.net/categories')
             .then(response => response.json())
             .then(categories => {
                 categories.forEach(category => {
@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function() {
             category_id: form.elements["dishCategory"].value
         };
 
-        fetch(`http://localhost:3000/menu/${id}`, {
+        fetch(`https://eu-cluster-west-01.k8s.cleardb.net/menu/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
