@@ -488,7 +488,8 @@ img
     margin-bottom: 20px;
 }
 
-.product-filter {
+.product-filter 
+{
     width: 80%;
     padding: 10px;
     font-size: 16px;
@@ -551,7 +552,9 @@ img
 
     .product-filter 
     {
+        position: relative;
         width: 80%;
+        right: 2%;
     }
 
     .dish-description 
@@ -593,9 +596,77 @@ textarea#dishDescription
 form#categoryForm,form#loginForm,form#registerForm,input
 {
     max-width: 340px;
+    
+}
+}
+
+@media (max-width: 400px) 
+{
+
+    header nav
+    {
+        margin-right: 28px;
+        margin-top: 30px; 
+        font-size: 12px;
+    }
+    
+    header nav a
+    {
+        margin: 0 10px;
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background-color: #9b9797;
+    }
+
+    .logo {
+        position: relative;
+        width: 80px;
+        height: auto;
+    }
+
+    .dish-description {
+        font-size: 12px;
+    }
+
+    form {
+        padding: 10px;
+    }
+
+    .menu-item img 
+    {
+        width: 80px;
+        height: 80px;
+    }
+
+    form#categoryForm,form#loginForm,form#registerForm,input
+{
+    max-width: 320px;
+    
+}
+
+h1,h2
+{
+    position: relative;
+    right: 2%;
+}
+
+.category 
+{
+
+    max-width: 320px;
+}
+
+.dish-description {
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 
-
+p.dish-description
+{
+    font-size: 12px;
 }
-
+}
