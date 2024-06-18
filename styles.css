@@ -602,49 +602,25 @@ form#categoryForm,form#loginForm,form#registerForm,input
 
 @media (max-width: 400px) 
 {
-
-    header nav
-    {
-        margin-right: 28px;
-        margin-top: 30px; 
-        font-size: 12px;
-    }
-    
-    header nav a
-    {
-        margin: 0 10px;
-        text-decoration: none;
-        color: #333;
-        font-weight: bold;
-        padding: 5px 10px;
-        border-radius: 5px;
-        background-color: #9b9797;
-    }
-
-    .logo {
-        position: relative;
-        width: 80px;
-        height: auto;
-    }
-
     .dish-description {
         font-size: 12px;
     }
 
-    form {
-        padding: 10px;
-    }
-
     .menu-item img 
     {
-        width: 80px;
-        height: 80px;
+        width: 60px;
+        height: 60px;
     }
-
+    .menu-item p
+    {
+        font-size: 12px;
+        margin: 4px;
+    }
     form#categoryForm,form#loginForm,form#registerForm,input
 {
     max-width: 320px;
-    
+    position: relative;
+    right: 2%;
 }
 
 h1,h2
@@ -655,18 +631,41 @@ h1,h2
 
 .category 
 {
-
     max-width: 320px;
 }
 
-.dish-description {
-    word-wrap: break-word;
-    word-break: break-word;
+textarea#dishDescription
+{
+
+    max-width: 270px;
 }
 
+h4
+{
+    font-size: 14px;
+}
 
 p.dish-description
 {
-    font-size: 12px;
+    font-size: 9px;
+    position: relative;
+    left: 75px;
+
+}
+form#menuForm
+{
+    max-width: 300px;
+    position: relative;
+    right: 2%;
+}
+
+h1
+{
+    font-size: 29px;
+}
+
+div.order-item
+{
+    max-width: 320px;
 }
 }
