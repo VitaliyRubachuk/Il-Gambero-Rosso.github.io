@@ -98,7 +98,7 @@ db.getConnection((err, connection) => {
 
 app.use(express.static(path.join(__dirname, 'rest')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
-app.use(express.static(path.join(__dirname, 'images')));
+app.use(express.static(path.join(__dirname, 'imagesApp')));
 
 const cssPath = path.join(__dirname, 'styles.css');
 const mainPath = path.join(__dirname, 'main.js');
@@ -107,10 +107,10 @@ const authPath = path.join(__dirname, 'auth.js');
 const adminordersPath = path.join(__dirname, 'admin-orders.js');
 const adminPath = path.join(__dirname, 'admin.js');
 //const logoPath = path.join(__dirname, 'images', 'logo.png');
-const logoPath = path.join(__dirname, 'logo.png');
-const FPath = path.join(__dirname, 'images', 'facebook-icon.png');
-const IPath = path.join(__dirname, 'images', 'instagram-icon.png');
-const TPath = path.join(__dirname, 'images', 'telegram-icon.png');
+const logoPath = path.join(__dirname, 'imagesApp/logo.png');
+const FPath = path.join(__dirname, 'imagesApp', 'facebook-icon.png');
+const IPath = path.join(__dirname, 'imagesApp', 'instagram-icon.png');
+const TPath = path.join(__dirname, 'imagesApp', 'telegram-icon.png');
 
 app.get('/styles.css', (req, res) => {
   res.sendFile(cssPath);
