@@ -117,8 +117,10 @@ app.get('/styles.css', (req, res) => {
 });
 
 app.get('/facebook-icon.png', (req, res) => {
+  console.log('Serving Facebook icon from:', FPath);
   res.sendFile(FPath);
 });
+
 
 app.get('/instagram-icon.png', (req, res) => {
   res.sendFile(IPath);
