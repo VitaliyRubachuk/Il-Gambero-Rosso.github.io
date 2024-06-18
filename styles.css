@@ -31,7 +31,7 @@ html
     width: 100px; 
     height: auto; 
     margin-right: 10px;
-    z-index: 999; /* Щоб логотип був наверху */
+
 }
 
 
@@ -46,8 +46,8 @@ header
 header nav
 {
     display: flex;
-    justify-content: center; /* Це для центрування по центру сторінки */
-    margin-top: 40px; /* При бажанні можна налаштувати відступ */
+    justify-content: center; 
+    margin-top: 40px; 
 }
 
 header nav a
@@ -483,54 +483,6 @@ img
 {
     background-color: #ff4d4d;
 }
-
-
-@media (max-width: 1400px) 
-{
-    .dish-description 
-    {
-        position: relative;
-        left: 15%;
-        top: -120px;
-        font-size: 14px;
-        color: #666;
-        margin-top: 10px;
-    }
-
-}
-
-
-@media (max-width: 800px) 
-{
-    header {
-        padding: 10px;
-    }
-
-    form {
-        padding: 10px;
-    }
-
-
-.logo 
-{
-    position: relative;
-    width: 120px; 
-    height: auto; 
-    margin-right: 10px;
-}
-
-.dish-description 
-{
-    position: relative;
-    left: 30%;
-    top: -120px;
-    font-size: 14px;
-    color: #666;
-    margin-top: 10px;
-}
-
-
-}
 .filter-container {
     text-align: center;
     margin-bottom: 20px;
@@ -545,9 +497,105 @@ img
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 768px) {
-    .product-filter {
-        width: 90%;
+
+@media (max-width: 600px) 
+{
+    header nav
+    {
+        margin-right: 28px;
+        margin-top: 30px; 
+        font-size: 12px;
     }
+    
+    header nav a
+    {
+        margin: 0 10px;
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background-color: #9b9797;
+    }
+
+    .logo {
+        position: relative;
+        width: 80px;
+        height: auto;
+    }
+
+    .dish-description {
+        font-size: 12px;
+    }
+
+    form {
+        padding: 10px;
+    }
+
+    .menu-item img 
+    {
+        width: 80px;
+        height: 80px;
+    }
+
+    .add-to-cart, .edit-button, .delete-button {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+
+    .add-to-cart 
+    {
+        padding: 5px 7px; 
+        font-size: 10px; 
+    }
+
+    .product-filter 
+    {
+        width: 80%;
+    }
+
+    .dish-description 
+{
+    left: 29%;
+    font-size: 9.5px;
+}
+.category 
+{
+    max-width: 375px;
+}
+
+.comment-button
+{
+    font-size: 12px;
+}
+
+div.order-item
+{
+    max-width: 365px;
+}
+
+form#menuForm
+{
+    max-width: 350px;
+}
+
+textarea#dishDescription
+{
+
+    max-width: 320px;
+    
+}
+
+.flex-container 
+{
+    max-height: 50px;
+}
+form#categoryForm,form#loginForm,form#registerForm,input
+{
+    max-width: 340px;
+}
+
+
+
 }
 
