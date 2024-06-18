@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function()
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
         const orderedItemsIds = cart.map(product => product.id).join(",");
 
-        fetch('http://localhost:3000/orders', 
+        fetch('https://il-gambero-rosso-github-io.onrender.com/orders', 
             {
             method: 'POST',
             headers: {

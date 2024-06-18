@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
 
-            const response = await fetch('http://localhost:3000/login', {
+            const response = await fetch('https://il-gambero-rosso-github-io.onrender.com/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const newUsername = document.getElementById("newUsername").value;
             const newPassword = document.getElementById("newPassword").value;
 
-            const response = await fetch('http://localhost:3000/register', {
+            const response = await fetch('https://il-gambero-rosso-github-io.onrender.com/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

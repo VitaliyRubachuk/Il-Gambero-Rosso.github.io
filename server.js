@@ -95,6 +95,7 @@ db.getConnection((err, connection) => {
     connection.release();
   }
 });
+
 app.use(express.static(path.join(__dirname, 'rest')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 app.use(express.static(path.join(__dirname, 'images')));
@@ -105,7 +106,8 @@ const orderPath = path.join(__dirname, 'order.js');
 const authPath = path.join(__dirname, 'auth.js');
 const adminordersPath = path.join(__dirname, 'admin-orders.js');
 const adminPath = path.join(__dirname, 'admin.js');
-const logoPath = path.join(__dirname, 'images', 'logo.png');
+//const logoPath = path.join(__dirname, 'images', 'logo.png');
+const logoPath = path.join(__dirname, 'logo.png');
 const FPath = path.join(__dirname, 'images', 'facebook-icon.png');
 const IPath = path.join(__dirname, 'images', 'instagram-icon.png');
 const TPath = path.join(__dirname, 'images', 'telegram-icon.png');
@@ -180,6 +182,12 @@ app.get('/order.html', (req, res) => {
 app.get('/register.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'register.html'));
 });
+
+app.use(cors({
+  origin: '*', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  allowedHeaders: ['Content-Type', 'Authorization']  
+}));
 
 
 

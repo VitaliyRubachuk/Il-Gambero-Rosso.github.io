@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
     function fetchMenu() {
-        fetch('https://eu-cluster-west-01.k8s.cleardb.net/menu')
+        fetch('https://il-gambero-rosso-github-io.onrender.com/menu')      //https://eu-cluster-west-01.k8s.cleardb.net/menu
             .then(response => response.json())
             .then(menu => {
                 renderMenu(menu);
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function deleteProduct(id) {
-        fetch(`https://eu-cluster-west-01.k8s.cleardb.net/menu${id}`, {
+        fetch(`https://il-gambero-rosso-github-io.onrender.com/menu/${id}`, {
             method: 'DELETE'
         }).then(() => fetchMenu());
     }
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
         commentsContainer.innerHTML = '';
 
-        fetch(`https://eu-cluster-west-01.k8s.cleardb.net/comments/${dishId}`)
+        fetch(`https://il-gambero-rosso-github-io.onrender.com/comments/${dishId}`)
             .then(response => response.json())
             .then(comments => {
                 comments.forEach(comment => {
@@ -137,11 +137,11 @@ document.addEventListener("DOMContentLoaded", function() {
     
 
     function deleteComment(commentId, dishId) {
-        fetch(`https://eu-cluster-west-01.k8s.cleardb.net/comments/${commentId}`, {
+        fetch(`https://il-gambero-rosso-github-io.onrender.com/comments/${commentId}`, {
             method: 'DELETE'
         })
         .then(() => {
-            fetch(`https://eu-cluster-west-01.k8s.cleardb.net/comments/reorder`) 
+            fetch(`https://il-gambero-rosso-github-io.onrender.com/comments/reorder`) 
             .then(() => openCommentModal(dishId)); 
         });
     }
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     
     function postComment(dishId, comment) {
-        fetch('https://eu-cluster-west-01.k8s.cleardb.net/comments', {
+        fetch('https://il-gambero-rosso-github-io.onrender.com/comments', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const dishCategorySelect = form.elements["dishCategory"];
         dishCategorySelect.innerHTML = '';
 
-        fetch('https://eu-cluster-west-01.k8s.cleardb.net/categories')
+        fetch('https://il-gambero-rosso-github-io.onrender.com/categories')
             .then(response => response.json())
             .then(categories => {
                 categories.forEach(category => {
@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function() {
             category_id: form.elements["dishCategory"].value
         };
 
-        fetch(`https://eu-cluster-west-01.k8s.cleardb.net/menu/${id}`, {
+        fetch(`https://il-gambero-rosso-github-io.onrender.com/menu/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

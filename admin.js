@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function()
     const categoryForm = document.getElementById("categoryForm");
 
     function fetchCategories() {
-        fetch('http://localhost:3000/categories')
+        fetch('https://il-gambero-rosso-github-io.onrender.com/categories')
             .then(response => response.json())
             .then(categories => {
                 const categorySelect = document.getElementById("dishCategory");
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function()
     }
 
     function fetchMenu() {
-        fetch('http://localhost:3000/menu')
+        fetch('https://il-gambero-rosso-github-io.onrender.com/menu')
             .then(response => response.json())
             .then(menu => {
                 const menuList = document.getElementById("menuList");
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function()
         const dishWeight = document.getElementById("dishWeight").value;
         const dishCategory = document.getElementById("dishCategory").value;
 
-        fetch('http://localhost:3000/menu', 
+        fetch('https://il-gambero-rosso-github-io.onrender.com/menu', 
             {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function()
         event.preventDefault();
         const categoryName = document.getElementById("categoryName").value;
 
-        fetch('http://localhost:3000/categories', {
+        fetch('https://il-gambero-rosso-github-io.onrender.com/categories', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: categoryName })

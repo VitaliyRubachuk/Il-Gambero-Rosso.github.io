@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const ordersList = document.getElementById("ordersList");
 
     function fetchOrders() {
-        fetch('http://localhost:3000/orders')
+        fetch('https://il-gambero-rosso-github-io.onrender.com/orders')
             .then(response => response.json())
             .then(orders => {
                 ordersList.innerHTML = '';
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function deleteOrder(id) {
-        fetch(`http://localhost:3000/orders/${id}`, {
+        fetch(`https://il-gambero-rosso-github-io.onrender.com/orders/${id}`, {
             method: 'DELETE'
         })
         .then(response => response.json())
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
    
     function fetchDishes(event) {
         event.preventDefault();
-        fetch('http://localhost:3000/menu')
+        fetch('https://il-gambero-rosso-github-io.onrender.com/menu')
             .then(response => response.json())
             .then(menu => {
                 const modal = document.getElementById("myModal");
@@ -72,11 +72,11 @@ document.addEventListener("DOMContentLoaded", function() {
             .catch(error => console.error('Error fetching menu:', error));
     }
 
-    // Event listener for the "View Dishes" link
+
     const viewDishesLink = document.getElementById("viewDishesLink");
     viewDishesLink.addEventListener("click", fetchDishes);
 
-    // Close modal when clicking on the close button (cross)
+
     const modal = document.getElementById("myModal");
     const closeButton = document.querySelector(".close");
 
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function() {
         modal.style.display = "none";
     });
 
-    // Close modal when clicking outside of it
+
     window.onclick = function(event) {
         if (event.target === modal) {
             modal.style.display = "none";
